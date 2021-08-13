@@ -28,7 +28,7 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //在内存中配置用户名密码
+       /* //在内存中配置用户名密码
         auth.inMemoryAuthentication()
                 .withUser("user")
                 .password(passwordEncoder.encode("user"))
@@ -41,7 +41,11 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
                 .roles("admin")
 
                 .and()
-                .passwordEncoder(passwordEncoder);//配置BCrypt加密
+                .passwordEncoder(passwordEncoder);//配置BCrypt加密*/
+
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+
+
     }
 
     @Override
@@ -87,7 +91,8 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
               //默认的账户密码
               .usernameParameter("username").passwordParameter("password")
               //登录成功后默认跳转路径
-                .defaultSuccessUrl("/home");
+                .defaultSuccessUrl("/home")
+      .permitAll().failureUrl("/login/error");
 
       //关闭跨域
         http.csrf().disable();
